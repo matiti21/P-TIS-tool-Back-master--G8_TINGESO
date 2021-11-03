@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  iniciales: MyString
+  usuario: one
+  grupos: one
+
+two:
+  iniciales: MyString
+  usuario: two
+  grupos: two
+
+Gabriela:
+  id: 23462345
+  iniciales: 'GMA'
+  usuario: stakeholder
+  grupos: one

@@ -1,0 +1,43 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_estudiante: estudiantes(:one).id
+  id_stakeholder: nil
+  minuta: one
+  tipo_asistencia: one
+
+two:
+  id_estudiante:
+  id_stakeholder: nil
+  minuta: two
+  tipo_asistencia: two
+
+Pablo:
+  id_estudiante: 262345
+  id_stakeholder: nil
+  minuta: one
+  tipo_asistencia: presente
+
+Maria:
+  id_estudiante: 234634523
+  id_stakeholder: nil
+  minuta: one
+  tipo_asistencia: presente
+
+cliente:
+  id_estudiante: nil
+  id_stakeholder: 23462345
+  minuta: one
+  tipo_asistencia: one
+
+uno:
+  id_estudiante: 262345
+  id_stakeholder: nil
+  minuta: avance
+  tipo_asistencia: presente
+
+dos:
+  id_estudiante: 234634523
+  id_stakeholder: nil
+  minuta: avance
+  tipo_asistencia: presente

@@ -1,0 +1,36 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  revision: MyString
+  minuta: one
+  motivo: one
+  emitida:
+  activa:
+
+two:
+  revision: MyString
+  motivo: two
+  minuta: two
+  emitida:
+  activa:
+
+three:
+  revision: A
+  motivo: uno
+  minuta: one
+  emitida: false
+  activa: true
+
+four:
+  revision: B
+  motivo: dos
+  minuta: one
+  emitida: true
+  activa: true
+
+avance:
+  revision: 0
+  motivo: cuatro
+  minuta: avance
+  emitida: false
+  activa: true

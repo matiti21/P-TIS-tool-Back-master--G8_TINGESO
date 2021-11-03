@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bitacora_revision: one
+  asistencia: one
+  tipo_aprobacion: one
+
+two:
+  bitacora_revision: two
+  asistencia: two
+  tipo_aprobacion: two
+
+Pablo:
+  bitacora_revision: three
+  asistencia: Pablo
+  tipo_aprobacion: one
+
+cliente:
+  bitacora_revision: four
+  asistencia: cliente
+  tipo_aprobacion: one

@@ -1,0 +1,100 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  apellido_paterno: MyString
+  apellido_materno: MyString
+  run: '11222333-4'
+  email: one@mystring.com
+  password_digest: <%= BCrypt::Password.create('MyString') %>
+  borrado:
+  deleted_at: 2020-10-19 00:58:53
+  rol: one
+
+two:
+  nombre: MyString
+  apellido_paterno: MyString
+  apellido_materno: MyString
+  run: '22333444-5'
+  email: two@mystring.com
+  password_digest: <%= BCrypt::Password.create('MyString') %>
+  borrado: true
+  deleted_at: 2020-10-19 00:58:53
+  rol: two
+
+three:
+  nombre: MyString
+  apellido_paterno: MyString
+  apellido_materno: MyString
+  run: '12345678-9'
+  email: MyString
+  password_digest: <%= BCrypt::Password.create('MyString') %>
+  borrado: true
+  deleted_at: 2020-10-19 00:58:53
+  rol: one
+
+four:
+  nombre: MyString
+  apellido_paterno: MyString
+  apellido_materno: MyString
+  run: MyString
+  email: MyString
+  password_digest: <%= BCrypt::Password.create('MyString') %>
+  borrado: false
+  deleted_at: 2020-10-19 00:58:53
+  rol: two
+
+Pablo:
+  nombre: Pablo
+  apellido_paterno: Castro
+  apellido_materno: Norambuena
+  run: '10234533-9'
+  email: pablo.castro@usach.cl
+  password_digest: <%= BCrypt::Password.create('pablo123') %>
+  borrado: false
+  deleted_at: 2020-10-19 00:58:53
+  rol: estudiante
+
+Maria:
+  nombre: María
+  apellido_paterno: Facunda
+  apellido_materno: Hernandez
+  run: '18293543-3'
+  email: maria.facunda@usach.cl
+  password_digest: <%= BCrypt::Password.create('maria123') %>
+  borrado: false
+  deleted_at: 2020-10-19 00:58:53
+  rol: estudiante
+
+coordinador:
+  nombre: Coordinador
+  apellido_paterno: Proyecto
+  apellido_materno: IngeSoft
+  run: nil
+  email: coordinador.proyecto@usach.cl
+  password_digest: <%= BCrypt::Password.create('coordinacion') %>
+  borrado: false
+  deleted_at: 2020-10-19 00:58:53
+  rol: coordinador
+
+profesor:
+  nombre: Pedro
+  apellido_paterno: Garmendia
+  apellido_materno: Soto
+  run: nil
+  email: pedro.garmendia@gmail.com
+  password_digest: <%= BCrypt::Password.create('profe') %>
+  borrado: false
+  deleted_at: 2020-10-19 00:58:53
+  rol: profesor
+
+stakeholder:
+  nombre: Gabriela
+  apellido_paterno: Martinez
+  apellido_materno: Astudillo
+  run: nil
+  email: gabriela.martinez@algo.com
+  password_digest: <%= BCrypt::Password.create('cliente') %>
+  borrado: false
+  deleted_at: 2020-10-19 00:58:53
+  rol: stakeholder
