@@ -464,9 +464,8 @@ estudiante= Estudiante.new
 estudiante.iniciales = "EP"
 estudiante.usuario_id= Usuario.find_by(email: 'prueba@gmail.com').id
 estudiante.seccion_id = Seccion.find_by(codigo: "A1").id 
-estudiante.grupo_id = 1
-if usuario_id
-estudiante.save
+estudiante.grupo_id = Grupo.find_by(nombre: 'SG').id
+estudiante.save!
 # Seeder para asignar secciones a los profesores
 profesores = Profesor.all
 profesor_uno = profesores.first
