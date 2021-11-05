@@ -36,3 +36,6 @@
 
 # Ignore coverage
 coverage
+
+#Ignore Gemfile
+Gemfile
