@@ -36,3 +36,7 @@
 
 # Ignore coverage
 coverage
+
+ # Ignore idea files
+
+.idea/
