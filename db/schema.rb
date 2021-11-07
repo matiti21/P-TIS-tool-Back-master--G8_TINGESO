@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_12_003938) do
+ActiveRecord::Schema.define(version: 2021_11_07_145623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,9 +78,9 @@ ActiveRecord::Schema.define(version: 2021_10_12_003938) do
     t.boolean "borrado", default: false
     t.datetime "deleted_at"
     t.bigint "asistencia_id", null: false
+    t.bigint "bitacora_revision_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "bitacora_revision_id", null: false
     t.index ["asistencia_id"], name: "index_comentarios_on_asistencia_id"
     t.index ["bitacora_revision_id"], name: "index_comentarios_on_bitacora_revision_id"
   end
@@ -114,6 +114,15 @@ ActiveRecord::Schema.define(version: 2021_10_12_003938) do
     t.index ["grupo_id"], name: "index_estudiantes_on_grupo_id"
     t.index ["seccion_id"], name: "index_estudiantes_on_seccion_id"
     t.index ["usuario_id"], name: "index_estudiantes_on_usuario_id"
+  end
+
+  create_table "faqs", force: :cascade do |t|
+    t.string "pregunta"
+    t.string "respuesta"
+    t.bigint "rol_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["rol_id"], name: "index_faqs_on_rol_id"
   end
 
   create_table "grupos", force: :cascade do |t|
@@ -386,6 +395,7 @@ ActiveRecord::Schema.define(version: 2021_10_12_003938) do
   add_foreign_key "estudiantes", "grupos"
   add_foreign_key "estudiantes", "secciones"
   add_foreign_key "estudiantes", "usuarios"
+  add_foreign_key "faqs", "roles"
   add_foreign_key "grupos_stakeholders", "grupos"
   add_foreign_key "grupos_stakeholders", "stakeholders"
   add_foreign_key "items", "bitacora_revisiones"

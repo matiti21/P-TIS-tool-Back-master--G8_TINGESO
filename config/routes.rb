@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   resources :motivos, only: [:index]
   resources :semestres, only: [:index]
   resources :minutas, only: [:create, :show, :update]
+  resources :faqs, only: [:index]
+  get 'faqs/usuario/:id', to: 'faqs#usuario'
   get 'minutas/correlativo/:id', to: 'minutas#correlativo'
   get 'minutas/grupo/:id', to: 'minutas#por_grupo'
   get 'minutas/revision/estados', to: 'minutas#por_estados'

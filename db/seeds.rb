@@ -48,6 +48,13 @@ Semestre.create([
     "fin" => "2021-07-24"
   }
 ])
+roles = Rol.all
+Faqs.create([
+   { "pregunta" => "¿Que es una minuta de cliente?",
+     "respuesta" => "Es la actividad en la cual se deja constancia de los temas tratados y los compromisos adquiridos por cada integrante del grupo en la última reunión con el cliente del proyecto",
+     "rol" => roles.find_by(rango: 1)
+   }
+ ])
 
 # Seeder para agregar Cursos
 Curso.create([
@@ -91,7 +98,7 @@ Seccion.create([
 ]) if seccion_A1.nil? && seccion_V21.nil?
 
 # Seeder para crear usuarios
-roles = Rol.all
+
 Usuario.create([
   {
     "nombre" => "Hector",
@@ -473,6 +480,9 @@ secciones = Seccion.joins(:jornada)
 profesor_uno.secciones.clear
 profesor_uno.secciones << secciones.where('jornadas.identificador =?', 2)
 profesor_uno.save
+
+faqs = faqs.all
+faqs.save
 # Seeder para agregar Tipos de Aprobaciones
 TipoAprobacion.create([
   {
