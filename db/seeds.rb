@@ -52,7 +52,36 @@ roles = Rol.all
 Faqs.create([
    { "pregunta" => "¿Que es una minuta de cliente?",
      "respuesta" => "Es la actividad en la cual se deja constancia de los temas tratados y los compromisos adquiridos por cada integrante del grupo en la última reunión con el cliente del proyecto",
-     "rol" => roles.find_by(rango: 1)
+     "rol" => roles.find_by(rango: 3)
+   },
+    { "pregunta" => "¿Que es una minuta semanal?",
+      "respuesta" => "Es la actividad en la cual se deja constancia del trabajo semanal, los logros y compromisos para la semana entrante",
+      "rol" => roles.find_by(rango: 3)
+    },
+    { "pregunta" => "Sección estudiante",
+      "respuesta" => "Descripción de las funcionalidades",
+      "section" => "estudiante",
+      "rol" => roles.find_by(rango: 2)
+    },
+    { "pregunta" => "Sección grupos",
+      "respuesta" => "Descripción de las funcionalidades",
+      "section" => "grupos",
+      "rol" => roles.find_by(rango: 2)
+    },
+   { "pregunta" => "Sección clientes",
+     "respuesta" => "Descripción de las funcionalidades",
+     "section" => "clientes",
+     "rol" => roles.find_by(rango: 2)
+   },
+   { "pregunta" => "Revisión minutas",
+     "respuesta" => "Descripción de las funcionalidades",
+     "section" => "minutas",
+     "rol" => roles.find_by(rango: 2)
+   },
+   { "pregunta" => "Revisión avances",
+     "respuesta" => "Descripción de las funcionalidades",
+     "section" => "avances",
+     "rol" => roles.find_by(rango: 2)
    }
  ])
 
