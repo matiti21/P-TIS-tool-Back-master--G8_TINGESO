@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   resources :semestres, only: [:index]
   resources :minutas, only: [:create, :show, :update]
   resources :faqs, only: [:index]
-  get 'faqs/estudiante', to: 'faqs#estudiante'
+  get 'faqs/rol', to: 'faqs#by_rol'
   get 'faqs/profesor/:section', to: 'faqs#profesor'
   get 'minutas/correlativo/:id', to: 'minutas#correlativo'
   get 'minutas/grupo/:id', to: 'minutas#por_grupo'

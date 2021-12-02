@@ -10,7 +10,7 @@ class FaqsController < ApplicationController
 
   end
 
-  def estudiante
+  def by_rol
     faqs = Faqs.where(
       'rol_id = ?', @usuario.rol_id)
     render json: faqs.as_json(json_data)
