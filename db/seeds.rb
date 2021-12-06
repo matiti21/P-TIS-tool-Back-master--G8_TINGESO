@@ -48,6 +48,11 @@ Semestre.create([
     "fin" => "2021-07-24"
   }
 ])
+roles = Rol.all
+
+Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each do |seed|
+  load seed
+end
 
 # Seeder para agregar Cursos
 Curso.create([
@@ -91,7 +96,7 @@ Seccion.create([
 ]) if seccion_A1.nil? && seccion_V21.nil?
 
 # Seeder para crear usuarios
-roles = Rol.all
+
 Usuario.create([
   {
     "nombre" => "Hector",
@@ -119,6 +124,15 @@ Usuario.create([
     "password" => "secret",
     "password_confirmation" => "secret",
     "rol" => roles.find_by(rango: 3)
+  },
+  {
+    "nombre" => "Cliente Prueba",
+    "apellido_paterno" => "Cliente",
+    "apellido_materno" => "Prueba",
+    "email" => "cliente@gmail.com",
+    "password" => "secret",
+    "password_confirmation" => "secret",
+    "rol" => roles.find_by(rango: 4)
   }
 ])
 
@@ -454,11 +468,17 @@ grupo.save(validate: false) if sin_asignacion.nil?
 # Seeder para crear profesores
 usuarios = Usuario.all
 profesor = Profesor.find_by(usuario: usuarios.find_by(email: 'mcchamorro@gmail.com').id)
+cliente = Stakeholder.find_by(usuario: usuarios.find_by(email: 'cliente@gmail.com').id)
 Profesor.create([
   {
     "usuario" => usuarios.find_by(email: 'mcchamorro@gmail.com')
   }
 ]) if profesor.nil?
+Stakeholder.create([
+  {
+    "usuario" => usuarios.find_by(email: 'cliente@gmail.com')
+  }
+]) if cliente.nil?
 # Seeder para crear Estudiantes
 estudiante= Estudiante.new
 estudiante.iniciales = "EP"
@@ -473,6 +493,9 @@ secciones = Seccion.joins(:jornada)
 profesor_uno.secciones.clear
 profesor_uno.secciones << secciones.where('jornadas.identificador =?', 2)
 profesor_uno.save
+
+#faqs = Faqs.all
+#faqs.save!
 # Seeder para agregar Tipos de Aprobaciones
 TipoAprobacion.create([
   {
