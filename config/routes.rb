@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   get 'minutas/correlativo/semanal/:id', to: 'minutas#correlativo_semanal'
   get 'minutas/avances/semanales/grupo/:id', to: 'minutas#avances_por_grupo'
   post 'minutas/actualizar/avance/semanal', to: 'minutas#actualizar_avance'
-
+  get 'verificar/:id', to: 'minutas#verificarAprobaciones'
   resources :comentarios, only: [:create, :show]
   resources :tipo_aprobaciones, only: [:index]
   resources :respuestas, only: [:create, :show]

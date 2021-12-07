@@ -12,6 +12,7 @@ class MinutasController < ApplicationController
     bitacora.tema.tema = params[:tema].to_s
     bitacora.assign_attributes(revision_params)
     tipo_estado = TipoEstado.find(params[:tipo_estado])
+    estudiantesArreglo=[]
     if tipo_estado.abreviacion.eql?('EMI')
       bitacora.emitida = true
       bitacora.fecha_emision = Time.now
@@ -45,6 +46,7 @@ class MinutasController < ApplicationController
         asistencia.minuta_id = bitacora.minuta.id
         unless a[:estudiante] == ''
           asistencia.id_estudiante = a[:estudiante]
+          estudiantesArreglo << a
         end
         unless a[:stakeholder] == ''
           asistencia.id_stakeholder = a[:stakeholder]
@@ -95,6 +97,10 @@ class MinutasController < ApplicationController
         bitacora_estado.save!
       end
       if tipo_estado.abreviacion.eql?('EMI')
+       # if estudiantesArreglo.length == 1
+        #  EstudiantesMailer.revisionCliente(bitacora).deliver_later
+          #EstudiantesMailer.revisionProfesor(bitacora).deliver_later
+        #end
         case bitacora.motivo.identificador
         when 'ECI'
           EstudiantesMailer.nuevaMinutaCoordinacion(bitacora).deliver_later
@@ -793,7 +799,81 @@ class MinutasController < ApplicationController
     end
     render json: lista.as_json
   end
-
+  # realiza verificaciones para que cuando se emita una minuta llegue al cliente y/o profesor
+  def verificarAprobaciones
+    bitacora = BitacoraRevision.joins(minuta: {estudiante: :grupo}).joins(minuta: :tipo_minuta).joins(minuta: :clasificacion).joins(:motivo).joins(:tema).select('
+      bitacora_revisiones.id,
+      bitacora_revisiones.revision AS rev_min,
+      motivos.motivo AS motivo_min,
+      motivos.identificador AS motivo_ident,
+      temas.tema AS tema_min,
+      minutas.id AS id_minuta,
+      minutas.codigo AS codigo_min,
+      minutas.correlativo AS correlativo_min,
+      minutas.fecha_reunion AS fecha_min,
+      minutas.h_inicio AS hora_ini,
+      minutas.h_termino AS hora_ter,
+      minutas.created_at AS creada_el,
+      estudiantes.iniciales AS iniciales_est,
+      tipo_minutas.tipo AS tipo_min,
+      clasificaciones.informativa AS informativa_min,
+      clasificaciones.avance AS avance_min,
+      clasificaciones.coordinacion AS coordinacion_min,
+      clasificaciones.decision AS decision_min,
+      clasificaciones.otro AS otro_min
+      ').find(params[:id])
+      asistencia = Asistencia.joins(:tipo_asistencia).select('
+      asistencias.id,
+      asistencias.id_estudiante AS id_est,
+      asistencias.id_stakeholder AS id_stake,
+      tipo_asistencias.tipo AS tipo_abrev,
+      tipo_asistencias.descripcion AS tipo_desc
+      ').where('minuta_id = ?', bitacora.id_minuta)
+    aprobadas=[]
+    aprobadasAux= Aprobacion.where(bitacora_revision_id: params[:id])
+    aprobadasAux.each do |aprobacion|
+      if aprobacion.tipo_aprobacion_id == 1 or aprobacion.tipo_aprobacion_id == 2
+        aprobadas << aprobacion
+      end
+    end
+    numeroAprobaciones= aprobadas.length
+    lista_asistencia = []
+    asistencia.each do |asis|
+      unless asis.id_est.nil?
+        participante = Estudiante.find(asis.id_est)
+        a = {id: asis.id, iniciales: participante.iniciales, id_estudiante: participante.id, id_stakeholder: nil, tipo: asis.tipo_abrev, descripcion: asis.tipo_desc}
+        lista_asistencia << a
+      else
+        unless asis.id_stake.nil?
+          participante = Stakeholder.find(asis.id_stake)
+          a = {id: asis.id, iniciales: participante.iniciales, id_estudiante: nil, id_stakeholder: participante.id, tipo: asis.tipo_abrev, descripcion: asis.tipo_desc}
+        else
+          participante = nil
+        end
+      end
+      if participante.nil?
+        a = {id: asis.id, iniciales: nil, id_estudiante: nil, id_stakeholder: nil, tipo: asis.tipo_abrev, descripcion: asis.tipo_desc}
+      end
+    end
+      if(numeroAprobaciones + 1) == (lista_asistencia.length - 1)
+        if(bitacora.tipo_min== "Coordinacion")
+          EstudiantesMailer.avisoAestudiantesEmision(bitacora).deliver_later
+          EstudiantesMailer.revisionProfesor(bitacora).deliver_later
+        elsif(bitacora.tipo_min== "Cliente")
+          EstudiantesMailer.revisionCliente(bitacora).deliver_later
+          EstudiantesMailer.revisionProfesorCliente(bitacora).deliver_later
+          EstudiantesMailer.avisoAestudiantes(bitacora).deliver_later
+          aModificar=BitacoraRevision.find_by(bitacora.bitacora_revisiones.id)
+          aModificar.update_atribute :motivo_id, 2
+          aModificar.save!
+        else
+          EstudiantesMailer.revisionCliente(bitacora).deliver_later
+          EstudiantesMailer.revisionCliente(bitacora).deliver_later
+          EstudiantesMailer.revisionCliente(bitacora).deliver_later
+        end
+        
+      end
+  end
   # Servicio que permite actualizar los logros y metas de un estudiante e ingresar nuevos logros y metas para los otros estudiantes del grupo
   def actualizar_avance
     bitacora = BitacoraRevision.find(params[:id])
@@ -914,7 +994,7 @@ class MinutasController < ApplicationController
 
   def minuta_cambio?(minuta)
     cambio = false
-    cambio = cambio || minuta.codigo_changed?
+    cambio = cambio || minuta.codigo_clengthhanged?
     cambio = cambio || minuta.fecha_reunion_changed?
     cambio = cambio || minuta.h_inicio_changed?
     cambio = cambio || minuta.h_termino_changed?
@@ -958,5 +1038,9 @@ class MinutasController < ApplicationController
     item.correlativo = params[:correlativo]
     item.save
   end
+  
 
 end
+
+
+
