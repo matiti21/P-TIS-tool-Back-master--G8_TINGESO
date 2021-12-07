@@ -30,18 +30,13 @@ class EstudiantesMailer < ApplicationMailer
   def avisoAestudiantes(bitacora)
     @bitacora = bitacora
     @emisor = bitacora.minuta.estudiante
-    emails = obtener_correos_estudiantes(bitacora)
+    emails = obtener_correos_estudiantesEmision(bitacora)
     mail(to: emails, subject: "Se ha emitido una minuta para revisión del cliente", template_name: 'aviso_a_estudiantes')
   end
   def avisoAestudiantesEmision(bitacora)
     @bitacora = bitacora
-    emails = obtener_correos_estudiantes(bitacora)
-    mail(to: emails, subject: "Se ha emitido una minuta de coordinación interna", template_name: 'minutaInterna_revision_estudiantes')
-  end
-  def avisoAestudiantesEmision(bitacora)
-    @bitacora = bitacora
     @emisor = bitacora.minuta.estudiante
-    emails = obtener_correos_estudiantes(bitacora)
+    emails = obtener_correos_estudiantesEmision(bitacora)
     mail(to: emails, subject: "Se ha emitido una minuta de coordinación interna", template_name: 'minutaInterna_revision_estudiantes')
   end
   def respuestaAlCliente(bitacora)
@@ -60,6 +55,17 @@ class EstudiantesMailer < ApplicationMailer
       unless a.id_estudiante == bitacora.minuta.estudiante_id
         lista_ids << a.id_estudiante
       end
+    end
+    estudiantes = Estudiante.joins(:usuario).where(id: lista_ids).select('usuarios.email AS correo')
+    emails = estudiantes.collect(&:correo).join(', ')
+    return emails
+  end
+
+  def obtener_correos_estudiantesEmision(bitacora)
+    asistencias = bitacora.minuta.asistencias.where.not(id_estudiante: nil)
+    lista_ids = []
+    asistencias.each do |a|
+        lista_ids << a.id_estudiante
     end
     estudiantes = Estudiante.joins(:usuario).where(id: lista_ids).select('usuarios.email AS correo')
     emails = estudiantes.collect(&:correo).join(', ')
