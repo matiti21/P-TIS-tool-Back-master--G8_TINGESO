@@ -3,11 +3,15 @@ Rails.application.routes.draw do
 
   resources :usuarios, only: [:index]
   resources :secciones, only: [:index]
+  get 'profesor/secciones/mostrar_secciones', to: 'secciones#mostrar_secciones'
+  get 'profesor/secciones/mostrar_secciones/:id', to: 'secciones#estudiantes_de_seccion'
+  get 'profesor/secciones/estudiantes_jornada', to: 'secciones#estudiantes_de_jornada'
   resources :estudiantes, only: [:index, :create, :show, :update]
   get 'estudiantes/asignacion/sin_grupo', to: 'estudiantes#sin_grupo'
   post 'estudiantes/eliminar', to: 'estudiantes#eliminar'
   post 'estudiantes/archivo/nuevos', to: 'estudiantes#desde_archivo'
   get 'estudiantes/archivo/plantilla', to: 'estudiantes#plantilla'
+
 
   resources :stakeholders, except: [:destroy, :new, :edit]
   get 'stakeholders/asignacion/grupos', to: 'stakeholders#por_jornada'
