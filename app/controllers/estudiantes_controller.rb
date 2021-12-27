@@ -33,8 +33,6 @@ class EstudiantesController < ApplicationController
           ')
     end
     render json: estudiantes.as_json(json_data)
-    puts "HOLA"
-    puts json: estudiantes.as_json(json_data)
   end
 
   # Servicio que permite crear un estudiante en el sistema

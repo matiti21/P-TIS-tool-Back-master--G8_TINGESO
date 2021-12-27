@@ -20,20 +20,9 @@ class SeccionesController < ApplicationController
         }
       }
     )
-    puts "Hola\n"
-    puts secciones.as_json(json_data)
-    puts "------"
-    puts json: secciones.as_json(
-      {except: %i[jornada_id semestre_id curso_id borrado deleted_at created_at updated_at],
-        :include => {
-          :curso => json_data,
-          :jornada => json_data,
-          :semestre => json_data
-        }
-      }
-    )
   end
-  def index3()
+  # Servicio que entrega las secciones asignadas a un profesor para el semestre activo y segun la jornada
+  def por_jornada()
     semestre_actual = Semestre.where('activo = ? AND borrado = ?', true, false).last
     usuario = Usuario.find(current_usuario.id)
     if usuario.rol.rango == 1
@@ -42,11 +31,6 @@ class SeccionesController < ApplicationController
       secciones = Seccion.joins(:profesores).where('profesores.usuario_id = ? AND semestre_id = ? AND jornada_id = ? AND borrado = ?', usuario.id, semestre_actual.id, params[:idJornada], false)
     end
     render json: secciones.as_json(json_data)
-
-    puts "Hola\n"
-    puts secciones.as_json(json_data)
-    puts "------"
-  
   end
 
 end

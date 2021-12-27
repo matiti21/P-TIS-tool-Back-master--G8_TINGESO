@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   resources :usuarios, only: [:index]
   resources :secciones, only: [:index]
-  get 'secciones1/:idJornada', to: 'secciones#index3'
+  get 'secciones/:idJornada', to: 'secciones#por_jornada'
   resources :estudiantes, only: [:index, :create, :show, :update]
   get 'estudiantes/asignacion/sin_grupo', to: 'estudiantes#sin_grupo'
   post 'estudiantes/eliminar', to: 'estudiantes#eliminar'
