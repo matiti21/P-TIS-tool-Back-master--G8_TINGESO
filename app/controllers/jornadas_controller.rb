@@ -12,5 +12,7 @@ class JornadasController < ApplicationController
       jornadas = Stakeholder.joins(grupos: {estudiantes: [seccion: :jornada]}).where('stakeholders.usuario_id = ? AND jornadas.borrado = ?', current_usuario.id, false).select('jornadas.*')
     end
     render json: jornadas.as_json(json_data)
+    puts "##JORNADAS###\n"
+    puts json: jornadas.as_json(json_data)
   end
 end
