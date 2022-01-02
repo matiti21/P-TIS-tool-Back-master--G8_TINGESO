@@ -3,6 +3,12 @@ class MinutasController < ApplicationController
   include JsonFormat
   include Funciones
 
+  def join_seccion
+    seccion_estudiante = Estudiante.find_by(usuario_id: current_usuario.id).seccion_id
+    secciones = Seccion.find_by(id: seccion_estudiante)
+    return secciones.profesores.ids[0]
+  end
+
   # Servicio que crea una minuta en el sistema
   def create
     bitacora = BitacoraRevision.new
@@ -684,7 +690,7 @@ class MinutasController < ApplicationController
     bitacora.minuta.h_termino = Time.now()
     bitacora.minuta.numero_sprint = params[:numero_sprint]
     bitacora.revision = '0'
-    bitacora.motivo_id = Motivo.find_by(identificador: 'EF').id
+    bitacora.motivo_id = Motivo.find_by(identificador: 'ES').id
     tipo_estado = TipoEstado.find_by(abreviacion: 'BOR')
     if bitacora.valid?
       bitacora.save
@@ -693,7 +699,14 @@ class MinutasController < ApplicationController
       asistencia.tipo_asistencia_id = TipoAsistencia.find_by(tipo: 'PRE').id
       asistencia.minuta_id = bitacora.minuta_id
       asistencia.id_estudiante = Estudiante.find_by(usuario_id: current_usuario.id).id
-      asistencia.save
+      asistencia.save!
+      asistencia_profesor = Asistencia.new
+      asistencia_profesor.tipo_asistencia_id = TipoAsistencia.find_by(tipo: 'PRE').id
+      asistencia_profesor.minuta_id = bitacora.minuta_id
+      seccion_estudiante = Estudiante.find_by(usuario_id: current_usuario.id).seccion_id
+      secciones = Seccion.find_by(id: seccion_estudiante)
+      asistencia_profesor.profesor_id = secciones.profesores.ids[0]
+      asistencia_profesor.save!
       responsable = Responsable.new
       responsable.asistencia_id = asistencia.id
       responsable.save
@@ -991,7 +1004,6 @@ class MinutasController < ApplicationController
       end
     end
   end
-
 
   private
   def minuta_params

@@ -229,6 +229,10 @@ Motivo.create([
     "identificador" => "ECI"
   },
   {
+    "motivo" => "Emitida para semana",
+    "identificador" => "ES"
+  },
+  {
     "motivo" => "Emitida para revisión del cliente",
     "identificador" => "ERC"
   },
@@ -271,7 +275,11 @@ TipoEstado.create([
   {
     "abreviacion" => "CER",
     "descripcion" => "Cerrada"
-  }
+  },
+  {
+    "abreviacion" => "CPF",
+    "descripcion" => "Comentada por profesor"
+  },
 ])
 
 # Seeder para agregar Tipos de actividades
