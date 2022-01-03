@@ -1,6 +1,5 @@
 class SeccionesController < ApplicationController
   before_action :authenticate_usuario
-  before_action :semestre_actual, only: [:index, :sin_grupo]
   before_action :usuario_actual, only: [:index, :sin_grupo]
   include JsonFormat
 
@@ -39,6 +38,22 @@ class SeccionesController < ApplicationController
       }
     )
   end
+  #Servicio que entrega todas las secciones asignadas a un profesor
+  def mostrar_secciones_asignadas
+    usuario = Usuario.find(current_usuario.id)
+    if usuario.rol.rango == 2
+      secciones = Seccion.joins(:profesores).where('profesores.usuario_id = ? AND borrado = ?', usuario.id, false)
+    end
+    render json: secciones.as_json(
+      {except: %i[jornada_id semestre_id curso_id borrado deleted_at created_at updated_at],
+        :include => {
+          :curso => json_data,
+          :jornada => json_data,
+          :semestre => json_data
+        }
+      }
+    )
+  end
 
    #Servicio que entrega los estudiantes de una seccion
   def estudiantes_de_seccion
@@ -63,8 +78,9 @@ class SeccionesController < ApplicationController
     semestre_actual = Semestre.where('activo = ? AND borrado = ?', true, false).last
     if usuario.rol.rango == 2
       estudiantes = Estudiante.joins(:usuario).joins(seccion: :jornada).joins(seccion: :semestre).where(
-        'semestres.id = ? AND usuarios.borrado = ?', semestre_actual.id, false).select(
+        'semestres.id = ? AND usuarios.borrado = ? AND jornadas.nombre = ?', semestre_actual.id, false, params[:nombre]).select(
           'estudiantes.id,
+          estudiantes.seccion_id,
           usuarios.run AS run_est,
           usuarios.nombre AS nombre_est,
           usuarios.apellido_paterno AS apellido1,
