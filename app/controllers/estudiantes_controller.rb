@@ -43,6 +43,7 @@ class EstudiantesController < ApplicationController
       estudiante.build_usuario
       estudiante.usuario.assign_attributes(estudiantes_params[:usuario_attributes])
       estudiante.iniciales = obtener_iniciales(estudiante.usuario)
+      estudiante.seccion_id= estudiantes_params[:seccion_id]
       estudiante.grupo_id = Grupo.find_by(nombre: 'SG').id
       rol_estudiante = Rol.find_by(rol: 'Estudiante')
       estudiante.usuario.rol_id = rol_estudiante.id
