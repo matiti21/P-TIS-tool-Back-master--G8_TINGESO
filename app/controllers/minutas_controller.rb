@@ -463,7 +463,7 @@ class MinutasController < ApplicationController
 
   # Servicio que entrega el número correlativo siguiente para la nueva minuta del grupo
   def correlativo
-    ultima = Minuta.joins(estudiante: :grupo).joins(:tipo_minuta).where('grupos.id = ? AND minutas.borrado = ?', params[:id], false).where.not('tipo_minutas.tipo = ?', 'Semanal').last
+    ultima = Minuta.joins(estudiante: :grupo).joins(:tipo_minuta).where('grupos.id = ? AND minutas.borrado = ?', params[:id], false).where.not('tipo_minutas.tipo = ?', 'Semanal').order('minutas.correlativo').last
     if ultima.nil?
       correlativo = 1
     else
