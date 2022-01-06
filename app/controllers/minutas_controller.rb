@@ -107,6 +107,7 @@ class MinutasController < ApplicationController
         when 'ERC'
           EstudiantesMailer.revisionCliente(bitacora).deliver_later
           EstudiantesMailer.avisoAestudiantes(bitacora).deliver_later
+          EstudiantesMailer.revisionProfesorCliente(bitacora).deliver_later
         end
       end
     else
@@ -480,41 +481,13 @@ class MinutasController < ApplicationController
       ').where('grupos.id = ? AND minutas.borrado = ? AND bitacora_revisiones.emitida = ?', params[:id], false, true).where.not('tipo_minutas.tipo = ?', 'Semanal')
     minutas = []
     bitacoras.each do |bit|
-      pos_min = 0
-      auxiliar = 0
-      codigo_rep = false
-      if minutas.length() == 0
-        h = {
-          id_rev: [[bit.id_bitacora, bit.rev_min]], motivo: bit.motivo_min, identificador: bit.motivo_ident,
-          minuta: {
-            id: [bit.id_minuta], codigo: bit.codigo_min, creada_por: [bit.iniciales_est], creada_el: [bit.creada_el], tipo: bit.tipo_min,
-          }
+      h = {
+        id: bit.id_bitacora, revision: bit.rev_min, motivo: bit.motivo_min, identificador: bit.motivo_ident,
+        minuta: {
+          id: bit.id_minuta, codigo: bit.codigo_min, creada_por: bit.iniciales_est, creada_el: bit.creada_el, tipo: bit.tipo_min,
         }
-        minutas << h
-      else
-        minutas.each do |min|
-          if min[:minuta][:codigo] == bit.codigo_min && min[:minuta][:tipo] == bit.tipo_min
-            pos_min = auxiliar
-            codigo_rep = true
-            break if codigo_rep
-          end
-          auxiliar = auxiliar + 1
-        end
-        if codigo_rep
-          minutas[pos_min][:id_rev].unshift([bit.id_bitacora, bit.rev_min])
-          minutas[pos_min][:minuta][:id].unshift(bit.id_minuta)
-          minutas[pos_min][:minuta][:creada_por].unshift(bit.iniciales_est)
-          minutas[pos_min][:minuta][:creada_el].unshift(bit.creada_el)
-        else
-          h = {
-            id_rev: [[bit.id_bitacora, bit.rev_min]], motivo: bit.motivo_min, identificador: bit.motivo_ident,
-            minuta: {
-              id: [bit.id_minuta], codigo: bit.codigo_min, creada_por: [bit.iniciales_est], creada_el: [bit.creada_el], tipo: bit.tipo_min,
-            }
-          }
-          minutas << h
-        end
-      end
+      }
+      minutas << h
     end
     render json: minutas.as_json
   end
@@ -885,19 +858,11 @@ class MinutasController < ApplicationController
     end
       if(numeroAprobaciones + 1) == (lista_asistencia.length - 1)
         if(bitacora.tipo_min== "Coordinacion")
-          EstudiantesMailer.avisoAestudiantesEmision(bitacora).deliver_later
-          EstudiantesMailer.revisionProfesor(bitacora).deliver_later
+          EstudiantesMailer.confirmacionMinutaInterna(bitacora).deliver_later
         elsif(bitacora.tipo_min== "Cliente")
-          EstudiantesMailer.revisionCliente(bitacora).deliver_later
-          EstudiantesMailer.revisionProfesorCliente(bitacora).deliver_later
-          EstudiantesMailer.avisoAestudiantes(bitacora).deliver_later
-          aModificar=BitacoraRevision.find_by(bitacora.bitacora_revisiones.id)
-          aModificar.update_atribute :motivo_id, 2
-          aModificar.save!
+          EstudiantesMailer.confirmacionMinutaCliente(bitacora).deliver_later
         else
-          EstudiantesMailer.revisionCliente(bitacora).deliver_later
-          EstudiantesMailer.revisionCliente(bitacora).deliver_later
-          EstudiantesMailer.revisionCliente(bitacora).deliver_later
+          EstudiantesMailer.nuevaMinutaSemanal(bitacora).deliver_later
         end
         
       end

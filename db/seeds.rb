@@ -115,24 +115,6 @@ Usuario.create([
     "password" => "secret",
     "password_confirmation" => "secret",
     "rol" => roles.find_by(rango: 2)
-  },
-  {
-    "nombre" => "Estudiante Prueba",
-    "apellido_paterno" => "Estudiante",
-    "apellido_materno" => "Prueba",
-    "email" => "prueba@gmail.com",
-    "password" => "secret",
-    "password_confirmation" => "secret",
-    "rol" => roles.find_by(rango: 3)
-  },
-  {
-    "nombre" => "Cliente Prueba",
-    "apellido_paterno" => "Cliente",
-    "apellido_materno" => "Prueba",
-    "email" => "cliente@gmail.com",
-    "password" => "secret",
-    "password_confirmation" => "secret",
-    "rol" => roles.find_by(rango: 4)
   }
 ])
 
@@ -474,18 +456,7 @@ Profesor.create([
     "usuario" => usuarios.find_by(email: 'mcchamorro@gmail.com')
   }
 ]) if profesor.nil?
-Stakeholder.create([
-  {
-    "usuario" => usuarios.find_by(email: 'cliente@gmail.com')
-  }
-]) if cliente.nil?
 # Seeder para crear Estudiantes
-estudiante= Estudiante.new
-estudiante.iniciales = "EP"
-estudiante.usuario_id= Usuario.find_by(email: 'prueba@gmail.com').id
-estudiante.seccion_id = Seccion.find_by(codigo: "A1").id 
-estudiante.grupo_id = Grupo.find_by(nombre: 'SG').id
-estudiante.save!
 # Seeder para asignar secciones a los profesores
 profesores = Profesor.all
 profesor_uno = profesores.first

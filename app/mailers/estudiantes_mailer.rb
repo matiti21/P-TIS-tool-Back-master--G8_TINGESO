@@ -5,6 +5,12 @@ class EstudiantesMailer < ApplicationMailer
     emails = obtener_correos_estudiantes(bitacora)
     mail(to: emails, subject: "Hay una nueva minuta de reunión que requiere tu revisión", template_name: 'nueva_minuta_coordinacion')
   end
+  def nuevaMinutaSemanal(bitacora)
+    @bitacora = bitacora
+    @emisor = bitacora.minuta.estudiante
+    emails = obtener_correos_estudiantes(bitacora)
+    mail(to: emails, subject: "Se ha emitido una minuta semanal", template_name: 'nueva_minuta_semanal')
+  end
   def revisionProfesorCliente(bitacora)
     @bitacora = bitacora
     @emisor = bitacora.minuta.estudiante
@@ -12,6 +18,7 @@ class EstudiantesMailer < ApplicationMailer
     emails = obtener_correos_profesores(bitacora)
     mail(to: emails, subject: "Hay una nueva minuta de reunión con el cliente que requiere tu revisión", template_name: 'minuta_revision_profesor')
   end
+
   def revisionProfesor(bitacora)
     @bitacora = bitacora
     @emisor = bitacora.minuta.estudiante
@@ -26,6 +33,19 @@ class EstudiantesMailer < ApplicationMailer
     emails = obtener_correos_stakeholders(bitacora)
     mail(to: emails, subject: "Se ha emitido una nueva minuta para su revisión", template_name: 'minuta_revision_cliente')
   end
+  def confirmacionMinutaCliente(bitacora)
+    @bitacora = bitacora
+    @emisor = bitacora.minuta.estudiante
+    emails = obtener_correos_estudiantesEmision(bitacora)
+    mail(to: emails, subject: "Se requiere realizar una nueva version de la minuta como confirmación", template_name: 'cliente_confirmacion')
+  end
+  def confirmacionMinutaInterna(bitacora)
+    @bitacora = bitacora
+    @emisor = bitacora.minuta.estudiante
+    emails = obtener_correos_estudiantesEmision(bitacora)
+    mail(to: emails, subject: "Se requiere realizar una nueva version de la minuta como confirmación", template_name: 'interna_confirmacion')
+  end
+
 
   def avisoAestudiantes(bitacora)
     @bitacora = bitacora
