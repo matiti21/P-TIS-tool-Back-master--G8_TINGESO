@@ -7,9 +7,10 @@ class Asistencia < ApplicationRecord
   has_one :responsable
 
   # Validaciones
-  validates :id_estudiante, presence: true, if: :id_stakeholder_nil?
-  validates :id_stakeholder, presence: true, if: :id_estudiante_nil?
-  validates :id_estudiante, :id_stakeholder, numericality: {only_integer: true, greater_than: 0}, allow_nil: true
+  validates :id_estudiante, presence: true, if: :is_estudiante?
+  validates :id_stakeholder, presence: true, if: :is_stakeholder?
+  validates :profesor_id, presence: true, if: :is_profesor?
+  validates :id_estudiante, :id_stakeholder, :profesor_id, numericality: {only_integer: true, greater_than: 0}, allow_nil: true
 
   def id_stakeholder_nil?
     self.id_stakeholder.nil?
@@ -17,6 +18,22 @@ class Asistencia < ApplicationRecord
 
   def id_estudiante_nil?
     self.id_estudiante.nil?
+  end
+
+  def id_profesor_nil?
+    self.profesor_id.nil?
+  end
+
+  def is_estudiante?
+    return self.id_stakeholder.nil? && self.profesor_id.nil?
+  end
+
+  def is_stakeholder?
+    return self.id_estudiante.nil? && self.profesor_id.nil?
+  end
+
+  def is_profesor?
+    return self.id_estudiante.nil? && self.id_stakeholder.nil?
   end
 
 end

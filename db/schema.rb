@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_10_094025) do
+ActiveRecord::Schema.define(version: 2021_12_28_111200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2021_11_10_094025) do
     t.bigint "tipo_asistencia_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "profesor_id"
     t.index ["minuta_id"], name: "index_asistencias_on_minuta_id"
     t.index ["tipo_asistencia_id"], name: "index_asistencias_on_tipo_asistencia_id"
   end

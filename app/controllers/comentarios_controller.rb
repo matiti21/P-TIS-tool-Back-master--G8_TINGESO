@@ -12,6 +12,9 @@ class ComentariosController < ApplicationController
     elsif current_usuario.rol.rango == 4
       asistencia = bitacora.minuta.asistencias.find_by(id_stakeholder: Stakeholder.find_by(usuario_id: current_usuario.id).id)
       es_estudiante = false
+    elsif current_usuario.rol.rango == 2
+      asistencia = bitacora.minuta.asistencias.find_by(profesor_id: Profesor.find_by(usuario_id: current_usuario.id).id)
+      es_estudiante = false
     else
       asistencia = nil
     end
@@ -58,6 +61,8 @@ class ComentariosController < ApplicationController
           elsif bitacora.motivo.identificador == 'ERC'
             bitacora_estado.tipo_estado_id = TipoEstado.find_by(abreviacion: 'CSK').id
           end
+        elsif bitacora.motivo.identificador == 'ES'
+          bitacora_estado.tipo_estado_id = TipoEstado.find_by(abreviacion: 'CPF').id
         else
           bitacora_estado.tipo_estado_id = TipoEstado.find_by(abreviacion: 'CER').id
         end

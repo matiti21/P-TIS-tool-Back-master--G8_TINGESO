@@ -37,6 +37,10 @@
 # Ignore coverage
 coverage
 
+#Ignore Gemfile
+Gemfile
+
+Gemfile.lock
  # Ignore idea files
 
 .idea/
