@@ -125,6 +125,38 @@ class GruposController < ApplicationController
     end
   end
 
+  # Servicio que entrega los estudiantes y stakeholder del grupo del usuario
+  def grupo_actual
+    usuario = Usuario.find(current_usuario.id)
+    if(usuario.rol.rango == 3)
+      estudiante = Estudiante.find_by(usuario_id: current_usuario.id)
+      grupo = Grupo.find(estudiante.grupo_id)
+      unless grupo.nil? 
+        estudiantes = Estudiante.joins(:grupo).joins(:usuario).where('grupos.id = ?', grupo.id).select('
+        estudiantes.id AS id_est,
+        estudiantes.iniciales AS iniciales_est,
+        usuarios.nombre AS nombre_est,
+        usuarios.apellido_paterno AS apellido1,
+        usuarios.apellido_materno AS apellido2,
+        usuarios.run AS run_est,
+        usuarios.email AS email_est')
+        estudiantes.each do |e|
+          h = {id: e.id_est, iniciales: e.iniciales_est, usuario: {nombre: e.nombre_est, apellido_paterno: e.apellido1, apellido_materno: e.apellido2, run: e.run_est, email: e.email_est}}
+          asignados << h
+        end
+        clientes = []
+        grupo.stakeholders.each do |stk|
+        h = {id: stk.id, iniciales: stk.iniciales, usuario: {nombre: stk.usuario.nombre, apellido_paterno: stk.usuario.apellido_paterno, apellido_materno: stk.usuario.apellido_materno, email: stk.usuario.email}}
+        clientes << h
+        end
+      datos = {id: grupo.id, nombre: grupo.nombre, proyecto: grupo.proyecto, correlativo: grupo.correlativo, estudiantes: asignados, stakeholders: clientes}
+      end
+    else
+      datos = []
+    end
+    render json: datos.as_json
+  end 
+
   # Servicio que entrega el último grupo de estudiantes disponibles asociados a una jornada
   def ultimo_grupo
     grupo = Estudiante.joins(:grupo).joins(seccion: :jornada).where('grupos.borrado = ? AND grupos.nombre <> ? AND jornadas.nombre = ?', false, 'SG', params[:jornada]).select('

@@ -224,4 +224,5 @@ class EstudiantesController < ApplicationController
     estudiante.grupo_id = id_grupo
     return estudiante
   end
+
 end

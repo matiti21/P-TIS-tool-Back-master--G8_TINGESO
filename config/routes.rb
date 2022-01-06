@@ -3,11 +3,15 @@ Rails.application.routes.draw do
 
   resources :usuarios, only: [:index]
   resources :secciones, only: [:index]
+  get 'profesor/secciones/mostrar_secciones', to: 'secciones#mostrar_secciones_asignadas'
+  get 'profesor/secciones/mostrar_secciones/:id', to: 'secciones#estudiantes_de_seccion'
+  get 'profesor/secciones/estudiantes_jornada/:nombre', to: 'secciones#estudiantes_de_jornada'
   resources :estudiantes, only: [:index, :create, :show, :update]
   get 'estudiantes/asignacion/sin_grupo', to: 'estudiantes#sin_grupo'
   post 'estudiantes/eliminar', to: 'estudiantes#eliminar'
   post 'estudiantes/archivo/nuevos', to: 'estudiantes#desde_archivo'
   get 'estudiantes/archivo/plantilla', to: 'estudiantes#plantilla'
+
 
   resources :stakeholders, except: [:destroy, :new, :edit]
   get 'stakeholders/asignacion/grupos', to: 'stakeholders#por_jornada'
@@ -17,6 +21,7 @@ Rails.application.routes.draw do
   resources :grupos, except: [:new, :edit]
   post 'grupos/ultimo_grupo', to: 'grupos#ultimo_grupo'
   put 'grupos/asignacion/stakeholders/:id', to: 'grupos#cambiar_asignacion'
+  get 'estudiante/chat', to: 'grupos#grupo_actual'
 
   resources :jornadas, only: [:index]
   resources :tipo_minutas, only: [:index]

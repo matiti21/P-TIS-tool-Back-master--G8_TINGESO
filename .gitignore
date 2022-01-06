@@ -40,3 +40,5 @@ coverage
  # Ignore idea files
 
 .idea/
+#Gemfile
+Gemfile
