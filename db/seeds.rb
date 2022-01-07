@@ -458,7 +458,6 @@ grupo.save(validate: false) if sin_asignacion.nil?
 # Seeder para crear profesores
 usuarios = Usuario.all
 profesor = Profesor.find_by(usuario: usuarios.find_by(email: 'mcchamorro@gmail.com').id)
-cliente = Stakeholder.find_by(usuario: usuarios.find_by(email: 'cliente@gmail.com').id)
 Profesor.create([
   {
     "usuario" => usuarios.find_by(email: 'mcchamorro@gmail.com')
