@@ -13,4 +13,9 @@ class JornadasController < ApplicationController
     end
     render json: jornadas.as_json(json_data)
   end
+  # Servicio que entrega las jornadas de estudio sin repetir
+  def sin_repetir
+    jornadas = Jornada.where('borrado = ?', false).group(:nombre)
+    render json: jornadas.as_json(json_data)
+  end
 end

@@ -1,6 +1,6 @@
 class SeccionesController < ApplicationController
   before_action :authenticate_usuario
-  before_action :usuario_actual, only: [:index, :sin_grupo]
+  #before_action :usuario_actual, only: [:index, :sin_grupo]
   include JsonFormat
 
   # Servicio que entrega las secciones asignadas a un profesor para el semestre activo
@@ -21,6 +21,26 @@ class SeccionesController < ApplicationController
         }
       }
     )
+  end
+  # Servicio que permite agregar una nueva seccion al sistema
+  def create
+    seccion = Seccion.new(seccion_params)
+    if seccion.valid?
+      seccion.save!
+    else
+      render json: ['error': 'Información de sección no es válida'], status: :unprocessable_entity
+    end
+  end
+  # Servicio que permite eliminar estudiantes del sistema mediante borrado lógico
+  def eliminar
+    if params[:eliminados].size > 0
+      seccion = Seccion.where(id: params[:eliminados])
+      seccion.each do |s|
+        s.borrado = true
+        s.deleted_at = Time.now()
+        s.save
+      end
+    end
   end
   #Servicio que entrega todas las secciones
   def mostrar_secciones
@@ -103,5 +123,10 @@ class SeccionesController < ApplicationController
         )
     end
     render json: estudiantes.as_json(json_data)
+  end
+
+  private
+  def seccion_params
+    params.require(:seccion).permit(:codigo, :jornada_id, :semestre_id, :curso_id)
   end
 end

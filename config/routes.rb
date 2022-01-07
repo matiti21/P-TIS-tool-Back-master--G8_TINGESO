@@ -2,11 +2,12 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   resources :usuarios, only: [:index]
-  resources :secciones, only: [:index]
+  resources :secciones, only: [:index, :create]
   get 'profesor/secciones/mostrar_secciones', to: 'secciones#mostrar_secciones_asignadas'
   get 'profesor/secciones/mostrar_secciones/:id', to: 'secciones#estudiantes_de_seccion'
   get 'profesor/secciones/estudiantes_jornada/:nombre', to: 'secciones#estudiantes_de_jornada'
   get 'secciones/:idJornada', to: 'secciones#por_jornada'
+  post 'secciones/eliminar', to: 'secciones#eliminar'
   resources :estudiantes, only: [:index, :create, :show, :update]
   get 'estudiantes/asignacion/sin_grupo', to: 'estudiantes#sin_grupo'
   post 'estudiantes/eliminar', to: 'estudiantes#eliminar'
@@ -25,6 +26,8 @@ Rails.application.routes.draw do
   get 'estudiante/chat', to: 'grupos#grupo_actual'
 
   resources :jornadas, only: [:index]
+  get 'jornadas/sin_repetir', to: 'jornadas#sin_repetir'
+  resources :cursos, only: [:index]
   resources :tipo_minutas, only: [:index]
   resources :tipo_asistencias, only: [:index]
   resources :tipo_items, only: [:index]
