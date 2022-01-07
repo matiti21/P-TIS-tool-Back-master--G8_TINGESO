@@ -2,6 +2,7 @@ class Grupo < ApplicationRecord
   has_many :estudiantes
   has_and_belongs_to_many :stakeholders
   before_save :sin_espacios
+  has_one :chat
 
   # Validaciones
   validates :nombre, :proyecto, presence: true
