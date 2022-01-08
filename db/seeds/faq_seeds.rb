@@ -118,6 +118,11 @@ Faqs.create([
     { "pregunta" => "Revisión de las respuestas a los comentarios realizados.",
       "respuesta" => "Las respuestas de los integrantes del grupo a los comentarios realizados pueden ser revisadas en la sección <b>Respondidas</b> de la vista inicial del cliente. Al seleccionar una minuta de esta sección, se presenta la minuta con los comentarios y las respuestas a los comentarios realizados. Se presenta la opción de aprobar la minuta o rechazarla según las respuestas a los comentarios realizados.<br><br>Tras la elección del estado de aprobación de la minuta, una vez que todos los clientes del grupo han concluido su revisión de las respuestas a los comentarios, la minuta concluye su etapa de revisión quedando registrada en la sección <b>Cerradas</b>.",
       "rol" => roles.find_by(rango: 4)
+    },
+    { "pregunta" => "Asignación de alumno a una sección.",
+      "respuesta" => "Descripción de funcionalidad",
+      "section" => "secciones",
+      "rol" => roles.find_by(rango: 2)
     }
   ])
 

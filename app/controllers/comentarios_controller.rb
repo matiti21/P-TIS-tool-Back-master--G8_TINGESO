@@ -9,12 +9,15 @@ class ComentariosController < ApplicationController
     if current_usuario.rol.rango == 3
       asistencia = bitacora.minuta.asistencias.find_by(id_estudiante: Estudiante.find_by(usuario_id: current_usuario.id).id)
       es_estudiante = true
+      es_profesor = false
     elsif current_usuario.rol.rango == 4
       asistencia = bitacora.minuta.asistencias.find_by(id_stakeholder: Stakeholder.find_by(usuario_id: current_usuario.id).id)
       es_estudiante = false
+      es_profesor = false
     elsif current_usuario.rol.rango == 2
       asistencia = bitacora.minuta.asistencias.find_by(profesor_id: Profesor.find_by(usuario_id: current_usuario.id).id)
       es_estudiante = false
+      es_profesor = true
     else
       asistencia = nil
     end
@@ -79,6 +82,8 @@ class ComentariosController < ApplicationController
             if aprobado
               bitacora.motivo_id = Motivo.find_by(identificador: 'EF').id
             end
+          elsif es_profesor == true
+            ProfesorMailer.comentariosMinuta(bitacora, current_usuario).deliver_later
           else
             StakeholdersMailer.comentariosMinuta(bitacora, current_usuario).deliver_later
           end
