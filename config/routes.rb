@@ -59,6 +59,11 @@ Rails.application.routes.draw do
   resources :usuarios, only: [:update]
   get 'login/user', to: 'usuarios#user'
 
+  resources :chats, only: [:index, :show]
+  post 'chats/crear_grupo', to: 'chats#crear_chat_grupo'
+
+  resources :mensajes, only: [:index, :show, :create]
+
   scope 'auth' do
     post 'login' => 'usuarios#login'
   end
