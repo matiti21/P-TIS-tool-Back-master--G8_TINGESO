@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_28_111200) do
+ActiveRecord::Schema.define(version: 2022_01_06_191813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,12 @@ ActiveRecord::Schema.define(version: 2021_12_28_111200) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["minuta_id"], name: "index_bitacora_revisiones_on_minuta_id"
     t.index ["motivo_id"], name: "index_bitacora_revisiones_on_motivo_id"
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.integer "grupo_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "clasificaciones", force: :cascade do |t|
@@ -175,6 +181,16 @@ ActiveRecord::Schema.define(version: 2021_12_28_111200) do
     t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "mensajes", force: :cascade do |t|
+    t.text "texto"
+    t.bigint "chat_id", null: false
+    t.bigint "usuario_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["chat_id"], name: "index_mensajes_on_chat_id"
+    t.index ["usuario_id"], name: "index_mensajes_on_usuario_id"
   end
 
   create_table "minutas", force: :cascade do |t|
@@ -404,6 +420,8 @@ ActiveRecord::Schema.define(version: 2021_12_28_111200) do
   add_foreign_key "items", "tipo_items"
   add_foreign_key "items_responsables", "items"
   add_foreign_key "items_responsables", "responsables"
+  add_foreign_key "mensajes", "chats"
+  add_foreign_key "mensajes", "usuarios"
   add_foreign_key "minutas", "clasificaciones"
   add_foreign_key "minutas", "estudiantes"
   add_foreign_key "minutas", "tipo_minutas"

@@ -60,6 +60,7 @@ class GruposController < ApplicationController
       estudiantes = Estudiante.joins(:grupo).joins(:usuario).where('grupos.id = ?', grupo.id).select('
         estudiantes.id AS id_est,
         estudiantes.iniciales AS iniciales_est,
+        usuarios.id AS id_usr,
         usuarios.nombre AS nombre_est,
         usuarios.apellido_paterno AS apellido1,
         usuarios.apellido_materno AS apellido2,
@@ -67,12 +68,12 @@ class GruposController < ApplicationController
         usuarios.email AS email_est')
       asignados = []
       estudiantes.each do |e|
-        h = {id: e.id_est, iniciales: e.iniciales_est, usuario: {nombre: e.nombre_est, apellido_paterno: e.apellido1, apellido_materno: e.apellido2, run: e.run_est, email: e.email_est}}
+        h = {id: e.id_est, iniciales: e.iniciales_est, usuario: {id: e.id_usr, nombre: e.nombre_est, apellido_paterno: e.apellido1, apellido_materno: e.apellido2, run: e.run_est, email: e.email_est}}
         asignados << h
       end
       clientes = []
       grupo.stakeholders.each do |stk|
-        h = {id: stk.id, iniciales: stk.iniciales, usuario: {nombre: stk.usuario.nombre, apellido_paterno: stk.usuario.apellido_paterno, apellido_materno: stk.usuario.apellido_materno, email: stk.usuario.email}}
+        h = {id: stk.id, iniciales: stk.iniciales, usuario: {id:stk.usuario_id, nombre: stk.usuario.nombre, apellido_paterno: stk.usuario.apellido_paterno, apellido_materno: stk.usuario.apellido_materno, email: stk.usuario.email}}
         clientes << h
       end
       datos = {id: grupo.id, nombre: grupo.nombre, proyecto: grupo.proyecto, correlativo: grupo.correlativo, estudiantes: asignados, stakeholders: clientes}

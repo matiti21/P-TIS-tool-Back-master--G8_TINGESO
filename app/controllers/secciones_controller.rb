@@ -1,6 +1,6 @@
 class SeccionesController < ApplicationController
   before_action :authenticate_usuario
-  before_action :usuario_actual, only: [:index, :sin_grupo]
+  #before_action :usuario_actual, only: [:index, :sin_grupo]
   include JsonFormat
 
   # Servicio que entrega las secciones asignadas a un profesor para el semestre activo
