@@ -119,8 +119,13 @@ Faqs.create([
       "respuesta" => "Las respuestas de los integrantes del grupo a los comentarios realizados pueden ser revisadas en la sección <b>Respondidas</b> de la vista inicial del cliente. Al seleccionar una minuta de esta sección, se presenta la minuta con los comentarios y las respuestas a los comentarios realizados. Se presenta la opción de aprobar la minuta o rechazarla según las respuestas a los comentarios realizados.<br><br>Tras la elección del estado de aprobación de la minuta, una vez que todos los clientes del grupo han concluido su revisión de las respuestas a los comentarios, la minuta concluye su etapa de revisión quedando registrada en la sección <b>Cerradas</b>.",
       "rol" => roles.find_by(rango: 4)
     },
-    { "pregunta" => "Asignación de alumno a una sección.",
-      "respuesta" => "Descripción de funcionalidad",
+    { "pregunta" => "Vista secciones.",
+      "respuesta" => "Se muestran todas las secciones, ya sean del semestre actual o de uno pasado para el profesor. Pulsando en el botón <b>Editar</b> se podrá acceder al menú de edición de la sección por parte del profesor.",
+      "section" => "secciones",
+      "rol" => roles.find_by(rango: 2)
+    },
+    { "pregunta" => "Asignación de estudiantes a una sección.",
+      "respuesta" => "En la vista de secciones apretar el botón <b>Editar</b> de la sección que se quiera editar. Una vez dentro se observa la lista de los estudiantes que actualmente se encuentran en la sección. Si se desea ingresar un nuevo estudiante, oprimir el botón <b>Asignar estudiante</b>, se mostrará una lista con todos los estudiantes posibles de asignar a la sección, se seleccionan haciendo click en el checkbox y una vez teniendo lista la selección, para confirmar los cambios se debe pulsar el botón <b>Actualizar</b>. Para desechar los cambios pulsar <b>Cancelar</b>.",
       "section" => "secciones",
       "rol" => roles.find_by(rango: 2)
     }
