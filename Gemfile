@@ -38,16 +38,16 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Use for mail testing
   gem 'letter_opener', '~> 1.7.0'
+  # Use for test the code
+  gem 'rspec-rails', '~> 4.1.2'
+  gem 'factory_bot_rails', '~> 6.2'
+  gem 'simplecov', '~> 0.21.2', require: false
 end
 
 group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-end
-
-group :test do
-  gem 'simplecov', '~> 0.17.1', require: false
 end
 
 group :production do
@@ -60,3 +60,5 @@ end
 
  #Windows polling
  gem 'wdm', '>= 0.1.0' if Gem.win_platform?
+
+#gem 'simplecov', require: false, group: :test
